@@ -13,3 +13,4 @@ def scan_network(ip_range):
         devices.append({'ip': received.psrc, 'mac': received.hwsrc})
 
     return devices
+    print(f"\nTotal Devices Connected: {len(devices)}")

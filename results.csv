@@ -1,0 +1,7 @@
+IP,Hostname,Port,Service,Banner
+192.168.0.100,jes.www.tendawifi.com,3306,Unknown,
+192.168.0.100,jes.www.tendawifi.com,3306,Unknown
+192.168.0.100,jes.www.tendawifi.com,445,microsoft-ds,
+192.168.0.100,jes.www.tendawifi.com,445,microsoft-ds
+192.168.0.100,jes.www.tendawifi.com,139,netbios-ssn,
+192.168.0.100,jes.www.tendawifi.com,139,netbios-ssn

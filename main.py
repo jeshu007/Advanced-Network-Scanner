@@ -6,7 +6,6 @@ import csv
 ip_range = input("Enter network (e.g. 192.168.1.0/24): ")
 
 devices = scan_network(ip_range)
-
 print("\nActive Devices:")
 for device in devices:
     print(device['ip'], device['mac'])

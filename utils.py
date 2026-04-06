@@ -45,14 +45,57 @@ def get_mac_vendor(mac):
 
 
 # 🔹 Detect Device Type
-def detect_device_type(vendor):
+def detect_device_type(vendor, ip, hostname):
     vendor = vendor.lower()
+    hostname = hostname.lower()
 
-    if any(x in vendor for x in ["apple", "samsung", "xiaomi", "oppo", "vivo", "oneplus"]):
+    # Router
+    if ip.endswith(".1") or any(x in vendor for x in ["tenda", "tp-link", "d-link", "netgear", "huawei"]):
+        return "📡 Router"
+
+    # Mobile
+    elif any(x in vendor for x in ["apple", "samsung", "xiaomi", "oppo", "vivo", "oneplus"]):
         return "📱 Mobile"
-    elif any(x in vendor for x in ["dell", "hp", "lenovo", "asus", "acer", "microsoft"]):
+
+    # PC / Laptop
+    elif any(x in vendor for x in ["intel", "realtek", "dell", "hp", "lenovo", "asus", "acer"]) \
+         or "pc" in hostname or "desktop" in hostname:
         return "💻 Laptop/PC"
-    elif any(x in vendor for x in ["cisco", "tp-link", "d-link", "netgear", "huawei"]):
-        return "📡 Router/Network Device"
+
     else:
         return "🖥️ Unknown Device"
+    
+def get_risk_level(port, service):
+    high_risk = [21, 23, 445, 3389]
+    medium_risk = [80, 139, 137]
+    low_risk = [22, 443]
+
+    if port in high_risk:
+        return "🔴 HIGH RISK"
+    elif port in medium_risk:
+        return "🟠 MEDIUM RISK"
+    elif port in low_risk:
+        return "🟢 LOW RISK"
+    else:
+        return "⚪ UNKNOWN"
+    
+def detect_os(open_ports):
+    ports = [p for p, _ in open_ports]
+
+    if 3389 in ports or 445 in ports:
+        return "🪟 Windows"
+    elif 22 in ports:
+        return "🐧 Linux"
+    elif 5555 in ports:
+        return "📱 Android"
+    else:
+        return "❓ Unknown OS"
+    
+def detect_suspicious(port):
+    suspicious_ports = {
+        4444: "Metasploit backdoor",
+        5555: "ADB (Android Debugging)",
+        6667: "IRC (possible botnet)",
+        31337: "Back Orifice trojan"
+    }
+    return suspicious_ports.get(port, "")
